@@ -50,16 +50,9 @@ public class SellerDaoJDBC implements SellerDao {
             preparedStatement.setInt(1,id);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()){
-                Department department = new Department();
-                department.setId(resultSet.getInt("DepartmentId"));
-                department.setName(resultSet.getString("DepartmentName"));
-                Seller seller = new Seller();
-                seller.setId(resultSet.getInt("Id"));
-                seller.setName(resultSet.getString("Name"));
-                seller.setEmail(resultSet.getString("Email"));
-                seller.setBaseSalary(resultSet.getDouble("BaseSalary"));
-                seller.setBirthDate(resultSet.getDate("BirthDate"));
-                seller.setDepartment(department);
+                //if next be true mean have the result of query
+                Department department = instantiateDepartment(resultSet);
+                Seller seller = instatiateSeller(resultSet,department);
                 return seller;
             }
 
@@ -70,6 +63,25 @@ public class SellerDaoJDBC implements SellerDao {
             DB.closeResultSet(resultSet);
         }
         return null;
+    }
+
+    private Department instantiateDepartment(ResultSet resultSet) throws SQLException{
+        Department department = new Department();
+        department.setName(resultSet.getString("DepartmentName"));
+        department.setId(resultSet.getInt("DepartmentId"));
+        return department;
+    }
+
+    private  Seller instatiateSeller(ResultSet resultSet, Department department) throws SQLException{
+        Seller seller = new Seller();
+        seller.setId(resultSet.getInt("Id"));
+        seller.setName(resultSet.getString("Name"));
+        seller.setEmail(resultSet.getString("Email"));
+        seller.setBaseSalary(resultSet.getDouble("BaseSalary"));
+        seller.setBirthDate(resultSet.getDate("BirthDate"));
+        seller.setDepartment(department);
+        // The seller work in a department , then here make the link between department and seller
+        return seller;
     }
 
     @Override
