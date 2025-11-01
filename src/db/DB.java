@@ -9,8 +9,8 @@ import java.sql.Statement;
 
 public class DB {
     static final String URL = "jdbc:mysql://localhost:3306/coursejdbc";
-    static final String PASSWORD = "NET.CoM123";
     static final String USER = "root";
+    static final String PASSWORD = "NET.CoM123";
     private static Connection conn = null;
 
     public static Connection getConnection() {
